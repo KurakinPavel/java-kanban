@@ -1,2 +1,2 @@
 # java-kanban
-Template repository for Kanban project.
+A project to demonstrate the implementation of basic design patterns.
