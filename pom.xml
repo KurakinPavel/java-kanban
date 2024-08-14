@@ -11,6 +11,7 @@
 	<groupId>ru.kurakin</groupId>
 	<artifactId>kanban</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>kanban</name>
 	<description>A project to demonstrate the implementation of basic design patterns</description>
 	<url/>
@@ -20,6 +21,10 @@
 	<developers>
 		<developer/>
 	</developers>
+	<modules>
+		<module>gateway</module>
+		<module>server</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
