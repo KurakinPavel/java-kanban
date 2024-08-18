@@ -1,2 +1,2 @@
 # java-organizer
-#### An own (pet) project, based on java-kanban, to demonstrate the implementation of basic design patterns.
+#### В проекте планирую прописать как реально встречавшуюся в деятельности ситуацию, когда какая-либо подзадача является составной частью сразу нескольких эпиков (групп взаимосвязанных задач), и внедрить в коде паттерны проектирования Observer (через класс PropertyChangeSupport и интерфейс PropertyChangeListener) и Proxy. 
