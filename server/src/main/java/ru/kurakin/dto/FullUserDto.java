@@ -1,7 +1,5 @@
-package ru.kurakin.users.dto;
+package ru.kurakin.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-    protected Integer id;
-    @NotBlank
+public class FullUserDto {
+    protected int id;
     protected String name;
-    @NotBlank
-    @Email
     protected String email;
 }

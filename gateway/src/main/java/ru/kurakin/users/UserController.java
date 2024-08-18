@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import ru.kurakin.users.dto.UserDto;
+import ru.kurakin.users.dto.NewUserDto;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -22,8 +22,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<ResponseEntity<UserDto>> saveUser(@RequestBody @Valid UserDto userDto) {
+    public Mono<ResponseEntity<Object>> saveUser(@RequestBody @Valid NewUserDto newUserDto) {
         log.info("Контроллер получил запрос на добавление нового пользователя");
-        return userClient.saveUser(userDto);
+        return userClient.saveUser(newUserDto);
     }
 }

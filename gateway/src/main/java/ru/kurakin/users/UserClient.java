@@ -6,19 +6,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.kurakin.users.dto.UserDto;
+import ru.kurakin.users.dto.NewUserDto;
 
 @Service
 @AllArgsConstructor
 public class UserClient {
     private final WebClient webClient;
 
-    public Mono<ResponseEntity<UserDto>> saveUser(UserDto userDto) {
+    public Mono<ResponseEntity<Object>> saveUser(NewUserDto newUserDto) {
         return webClient.post()
                 .uri("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(userDto)
+                .bodyValue(newUserDto)
                 .retrieve()
-                .toEntity(UserDto.class);
+                .toEntity(Object.class);
     }
 }
+
+

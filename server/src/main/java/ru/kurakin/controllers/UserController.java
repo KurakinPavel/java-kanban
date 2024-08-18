@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kurakin.dto.UserDto;
+import ru.kurakin.dto.FullUserDto;
+import ru.kurakin.dto.NewUserDto;
 import ru.kurakin.services.UserService;
 
 @RestController
@@ -20,8 +21,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto saveUser(@RequestBody UserDto userDto) {
+    public FullUserDto saveUser(@RequestBody NewUserDto newUserDto) {
         log.info("Контроллер сервера получил запрос на добавление нового пользователя");
-        return userService.saveUser(userDto);
+        return userService.saveUser(newUserDto);
     }
 }
