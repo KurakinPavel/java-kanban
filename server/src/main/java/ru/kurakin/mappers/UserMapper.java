@@ -1,8 +1,8 @@
 package ru.kurakin.mappers;
 
-import ru.kurakin.dto.FullUserDto;
-import ru.kurakin.dto.NewUserDto;
-import ru.kurakin.dto.ShortUserDto;
+import ru.kurakin.dto.user.FullUserDto;
+import ru.kurakin.dto.user.NewUserDto;
+import ru.kurakin.dto.user.ShortUserDto;
 import ru.kurakin.model.User;
 
 public class UserMapper {

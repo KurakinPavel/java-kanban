@@ -1,4 +1,4 @@
-package ru.kurakin.dto;
+package ru.kurakin.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

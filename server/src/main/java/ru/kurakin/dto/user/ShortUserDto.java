@@ -1,4 +1,4 @@
-package ru.kurakin.dto;
+package ru.kurakin.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FullUserDto {
+public class ShortUserDto {
     protected int id;
     protected String name;
-    protected String email;
 }

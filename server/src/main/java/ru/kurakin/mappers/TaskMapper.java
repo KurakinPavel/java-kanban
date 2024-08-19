@@ -1,7 +1,7 @@
 package ru.kurakin.mappers;
 
-import ru.kurakin.dto.NewTaskDto;
-import ru.kurakin.dto.TaskStatus;
+import ru.kurakin.dto.task.NewTaskDto;
+import ru.kurakin.enums.TaskStatus;
 import ru.kurakin.model.Epic;
 import ru.kurakin.model.Task;
 import ru.kurakin.model.User;

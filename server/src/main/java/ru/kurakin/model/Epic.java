@@ -10,13 +10,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.kurakin.dto.TaskStatus;
+import ru.kurakin.enums.TaskStatus;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -36,6 +38,10 @@ public class Epic {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "COORDINATOR_ID")
     protected User coordinator;
+    @ManyToMany
+    @JoinTable(name = "EPIC_TASKS",
+            joinColumns = @JoinColumn(name = "EPIC_ID"),
+            inverseJoinColumns = @JoinColumn(name = "TASK_ID"))
     protected Set<Task> tasks;
     @Column(nullable = false)
     protected String title;

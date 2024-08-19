@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kurakin.dto.FullUserDto;
-import ru.kurakin.dto.NewUserDto;
+import ru.kurakin.dto.user.FullUserDto;
+import ru.kurakin.dto.user.NewUserDto;
 import ru.kurakin.services.UserService;
 
 @RestController

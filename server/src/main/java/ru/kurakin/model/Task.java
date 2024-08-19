@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.kurakin.dto.TaskStatus;
+import ru.kurakin.enums.TaskStatus;
 
 import java.time.LocalDate;
 import java.util.Set;
