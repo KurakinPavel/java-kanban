@@ -14,7 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class NewTaskDto {
     protected Integer epicId;
-    protected List<Integer> performers;
+    protected Integer performerId;
+    protected List<Integer> dependentTaskIds;
     protected String title;
     protected String description;
     protected LocalDate startDate;

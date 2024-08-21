@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShortTaskDto {
     protected int id;
-    protected List<ShortUserDto> performers;
+    protected ShortUserDto performer;
     protected String title;
     protected String status;
     protected String startDate;

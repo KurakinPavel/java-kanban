@@ -38,11 +38,15 @@ public class Task {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "EPIC_ID")
     protected Epic epic;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "PERFORMER_ID")
+    protected User performer;
     @ManyToMany
-    @JoinTable(name = "TASK_PERFORMERS",
-            joinColumns = @JoinColumn(name = "TASK_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PERFORMER_ID"))
-    protected Set<User> performers;
+    @JoinTable(name = "TASK_DEPEND_TASKS",
+            joinColumns = @JoinColumn(name = " TASK_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DEPEND_TASK_ID"))
+    protected Set<Task> dependentTasks;
     @Column(nullable = false)
     protected String title;
     @Column(nullable = false)

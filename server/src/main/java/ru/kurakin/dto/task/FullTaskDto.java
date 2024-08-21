@@ -15,8 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class FullTaskDto {
     protected int id;
-    protected ShortEpicDto shortEpicDto;
-    protected List<ShortUserDto> performers;
+    protected ShortEpicDto epic;
+    protected ShortUserDto performer;
+    protected List<ShortTaskDto> dependentTasks;
     protected String title;
     protected String description;
     protected String status;
