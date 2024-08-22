@@ -1,4 +1,4 @@
-package ru.kurakin.users.dto;
+package ru.kurakin.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

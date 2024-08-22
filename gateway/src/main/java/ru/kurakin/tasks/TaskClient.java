@@ -1,4 +1,4 @@
-package ru.kurakin.users;
+package ru.kurakin.tasks;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -9,14 +9,14 @@ import reactor.core.publisher.Mono;
 
 @Service
 @AllArgsConstructor
-public class UserClient {
+public class TaskClient {
     private final WebClient webClient;
 
-    public Mono<ResponseEntity<Object>> saveUser(NewUserDto newUserDto) {
+    public Mono<ResponseEntity<Object>> saveTask(NewTaskDto newTaskDto) {
         return webClient.post()
-                .uri("/users")
+                .uri("/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(newUserDto)
+                .bodyValue(newTaskDto)
                 .retrieve()
                 .toEntity(Object.class);
     }

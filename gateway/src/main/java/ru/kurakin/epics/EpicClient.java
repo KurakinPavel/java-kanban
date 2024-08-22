@@ -1,4 +1,4 @@
-package ru.kurakin.users;
+package ru.kurakin.epics;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -9,14 +9,14 @@ import reactor.core.publisher.Mono;
 
 @Service
 @AllArgsConstructor
-public class UserClient {
+public class EpicClient {
     private final WebClient webClient;
 
-    public Mono<ResponseEntity<Object>> saveUser(NewUserDto newUserDto) {
+    public Mono<ResponseEntity<Object>> saveEpic(NewEpicDto newEpicDto) {
         return webClient.post()
-                .uri("/users")
+                .uri("/epics")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(newUserDto)
+                .bodyValue(newEpicDto)
                 .retrieve()
                 .toEntity(Object.class);
     }

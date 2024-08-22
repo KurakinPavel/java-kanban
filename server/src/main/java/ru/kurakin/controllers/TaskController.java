@@ -22,7 +22,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FullTaskDto saveTask(@RequestBody NewTaskDto newTaskDto) {
-        log.info("Контроллер сервера получил запрос на добавление нового пользователя");
+        log.info("Контроллер сервера получил запрос на добавление новой задачи");
         return taskService.saveTask(newTaskDto);
     }
 }

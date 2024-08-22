@@ -1,4 +1,4 @@
-package ru.kurakin.users;
+package ru.kurakin.tasks;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/tasks")
 @AllArgsConstructor
 @Slf4j
-public class UserController {
-    private final UserClient userClient;
+public class TaskController {
+    private final TaskClient taskClient;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<ResponseEntity<Object>> saveUser(@RequestBody @Valid NewUserDto newUserDto) {
-        log.info("Контроллер получил запрос на добавление нового пользователя");
-        return userClient.saveUser(newUserDto);
+    public Mono<ResponseEntity<Object>> saveUser(@RequestBody @Valid NewTaskDto newTaskDto) {
+        log.info("Контроллер получил запрос на добавление новой задачи");
+        return taskClient.saveTask(newTaskDto);
     }
 }
