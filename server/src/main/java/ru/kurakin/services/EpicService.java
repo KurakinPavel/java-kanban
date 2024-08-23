@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kurakin.dto.epic.EpicParametersDto;
 import ru.kurakin.dto.epic.FullEpicDto;
 import ru.kurakin.dto.epic.NewEpicDto;
 import ru.kurakin.enums.TaskStatus;
@@ -39,11 +40,11 @@ public class EpicService {
             throw new IllegalArgumentException("При создании эпика указаны не существующие задачи");
         }
         Set<Task> tasks = new HashSet<>(epicTasks);
-        Map<String, Object> calculatedParameters = calculateEpicParameters(epicTasks);
-        TaskStatus status = (TaskStatus) calculatedParameters.get("calculatedStatus");
-        int duration = (int) calculatedParameters.get("duration");
-        LocalDate epicStart = (LocalDate) calculatedParameters.get("epicStart");
-        LocalDate epicEnd = (LocalDate) calculatedParameters.get("epicEnd");
+        EpicParametersDto calculatedParameters = calculateEpicParameters(epicTasks);
+        TaskStatus status = calculatedParameters.getCalculatedStatus();
+        int duration = calculatedParameters.getDuration();
+        LocalDate epicStart = calculatedParameters.getEpicStart();
+        LocalDate epicEnd = calculatedParameters.getEpicEnd();
         Epic epic = epicRepository.save(EpicMapper.toEpic(newEpicDto, coordinator, tasks, status, duration, epicStart, epicEnd));
         for (Task task : epicTasks) {
             task.setEpic(epic);
@@ -52,7 +53,7 @@ public class EpicService {
         return EpicMapper.toFullEpicDto(epic);
     }
 
-    private Map<String, Object> calculateEpicParameters(List<Task> tasks) {
+    private EpicParametersDto calculateEpicParameters(List<Task> tasks) {
         int duration = 0;
         TaskStatus calculatedStatus = null;
         LocalDate epicStart = tasks.get(0).getStartDate();
@@ -74,12 +75,6 @@ public class EpicService {
         } else if (taskStatuses.size() > 1) {
             calculatedStatus = TaskStatus.IN_PROGRESS;
         }
-        assert calculatedStatus != null;
-        return Map.of(
-                "duration", duration,
-                "calculatedStatus", calculatedStatus,
-                "epicStart", epicStart,
-                "epicEnd", epicEnd
-        );
+        return new EpicParametersDto(duration, calculatedStatus, epicStart, epicEnd);
     }
 }
