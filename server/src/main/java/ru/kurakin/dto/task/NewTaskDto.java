@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -18,6 +17,6 @@ public class NewTaskDto {
     protected List<Integer> dependentTaskIds;
     protected String title;
     protected String description;
-    protected LocalDate startDate;
+    protected String startDate;
     protected Integer duration;
 }

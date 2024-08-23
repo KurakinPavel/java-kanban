@@ -28,7 +28,7 @@ public class NewTaskDto {
     @Size(min = 5)
     protected String description;
     @Pattern(regexp = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$")
-    protected LocalDate startDate;
+    protected String startDate;
     @Positive
     protected Integer duration;
 }
