@@ -27,12 +27,18 @@ public class TaskService {
 
     @Transactional
     public FullTaskDto saveTask(NewTaskDto newTaskDto) {
-        Epic epic = epicRepository.getReferenceById(newTaskDto.getEpicId());
+        Epic epic = null;
+        if (newTaskDto.getEpicId() != null && newTaskDto.getEpicId() > 0) {
+            epic = epicRepository.getReferenceById(newTaskDto.getEpicId());
+        }
         User performer = userRepository.getReferenceById(newTaskDto.getPerformerId());
         performer.getId();
-        Set<Task> dependentTasks = new HashSet<>(taskRepository.findAllById(newTaskDto.getDependentTaskIds()));
-        if (dependentTasks.size() != newTaskDto.getDependentTaskIds().size()) {
-            throw new IllegalArgumentException("При создании задания указаны не существующие зависящие задачи");
+        Set<Task> dependentTasks = new HashSet<>();
+        if (newTaskDto.getDependentTaskIds() != null && !newTaskDto.getDependentTaskIds().isEmpty()) {
+            dependentTasks.addAll(taskRepository.findAllById(newTaskDto.getDependentTaskIds()));
+            if (dependentTasks.size() != newTaskDto.getDependentTaskIds().size()) {
+                throw new IllegalArgumentException("При создании задания указаны не существующие зависящие задачи");
+            }
         }
         return TaskMapper.toFullTaskDto(taskRepository.save(TaskMapper.toTask(newTaskDto, epic, performer, dependentTasks)));
     }
