@@ -1,5 +1,6 @@
 package ru.kurakin.mappers;
 
+import ru.kurakin.dto.epic.EpicParametersDto;
 import ru.kurakin.dto.epic.FullEpicDto;
 import ru.kurakin.dto.epic.NewEpicDto;
 import ru.kurakin.dto.epic.ShortEpicDto;
@@ -9,6 +10,9 @@ import ru.kurakin.model.Task;
 import ru.kurakin.model.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,5 +56,30 @@ public class EpicMapper {
                 epic.getStartTime().toString(),
                 epic.getEndTime().toString()
         );
+    }
+
+    public static EpicParametersDto calculateEpicParameters(List<Task> tasks) {
+        int duration = 0;
+        TaskStatus calculatedStatus = null;
+        LocalDate epicStart = tasks.get(0).getStartDate();
+        LocalDate epicEnd = tasks.get(0).getEndDate();
+        Set<TaskStatus> taskStats = new HashSet<>();
+        for (Task task : tasks) {
+            duration += task.getDuration();
+            taskStats.add(task.getStatus());
+            if (epicStart.isAfter(task.getStartDate())) {
+                epicStart = task.getStartDate();
+            }
+            if (epicEnd.isBefore(task.getEndDate())) {
+                epicEnd = task.getEndDate();
+            }
+        }
+        List<TaskStatus> taskStatuses = new ArrayList<>(taskStats);
+        if (taskStatuses.size() == 1) {
+            calculatedStatus = taskStatuses.get(0);
+        } else if (taskStatuses.size() > 1) {
+            calculatedStatus = TaskStatus.IN_PROGRESS;
+        }
+        return new EpicParametersDto(duration, calculatedStatus, epicStart, epicEnd);
     }
 }

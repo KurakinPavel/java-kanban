@@ -19,9 +19,9 @@ public class NewEpicDto {
     protected Integer coordinatorId;
     protected List<Integer> taskIds;
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 10)
     protected String title;
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 10)
     protected String description;
 }
