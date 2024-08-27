@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateTaskDto {
-    protected Integer epicId;
     protected Integer performerId;
     protected List<Integer> dependentTaskIds;
     protected String title;
     protected String description;
+    protected String status;
     protected String startDate;
     protected Integer duration;
 }
