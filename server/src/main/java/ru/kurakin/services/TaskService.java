@@ -111,5 +111,4 @@ public class TaskService {
         }
         return TaskMapper.toFullTaskDto(taskRepository.save(updatingTask));
     }
-
 }
