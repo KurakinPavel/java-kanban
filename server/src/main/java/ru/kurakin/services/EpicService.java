@@ -114,7 +114,7 @@ public class EpicService {
             throw new IllegalArgumentException("Подзадача с id " + taskId + " уже связана с эпиком с id " + task.getEpic().getId());
         }
         Set<Task> epicTasks = epic.getTasks();
-        boolean resultOfAdding = epicTasks.remove(task);
+        boolean resultOfAdding = epicTasks.add(task);
         if (resultOfAdding) {
             task.setEpic(epic);
             EpicParametersDto calculatedParameters = EpicMapper.calculateEpicParameters(epicTasks.stream().toList());
