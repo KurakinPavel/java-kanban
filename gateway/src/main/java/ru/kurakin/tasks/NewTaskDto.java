@@ -21,10 +21,10 @@ public class NewTaskDto {
     protected Integer performerId;
     protected List<Integer> dependentTaskIds;
     @NotBlank
-    @Size(min = 50)
+    @Size(min = 10)
     protected String title;
     @NotBlank
-    @Size(min = 500)
+    @Size(min = 10)
     protected String description;
     @Pattern(regexp = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$")
     protected String startDate;
