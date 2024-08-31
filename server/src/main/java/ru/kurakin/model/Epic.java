@@ -51,8 +51,8 @@ public class Epic {
     protected TaskStatus status;
     @Column(nullable = false)
     protected int duration;
-    @Column(name = "START_DATE", nullable = false)
+    @Column(name = "START_DATE")
     protected LocalDate startTime;
-    @Column(name = "END_DATE", nullable = false)
+    @Column(name = "END_DATE")
     protected LocalDate endTime;
 }

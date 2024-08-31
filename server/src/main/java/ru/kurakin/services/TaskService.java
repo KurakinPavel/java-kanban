@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -110,5 +111,17 @@ public class TaskService {
             epicRepository.save(updatingEpic);
         }
         return TaskMapper.toFullTaskDto(taskRepository.save(updatingTask));
+    }
+
+    @Transactional(readOnly = true)
+    public FullTaskDto getTaskById(int taskId) {
+        return TaskMapper.toFullTaskDto(taskRepository.getReferenceById(taskId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<FullTaskDto> getTaskWithoutEpics() {
+        return taskRepository.findAllWhereEpicIsNull().stream()
+                .map(TaskMapper::toFullTaskDto)
+                .collect(Collectors.toList());
     }
 }

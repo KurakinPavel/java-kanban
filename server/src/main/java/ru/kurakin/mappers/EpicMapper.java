@@ -32,15 +32,16 @@ public class EpicMapper {
         return new FullEpicDto(
                 epic.getId(),
                 UserMapper.toShortUserDto(epic.getCoordinator()),
-                epic.getTasks().stream()
-                        .map(TaskMapper::toFullTaskDto)
-                        .collect(Collectors.toList()),
+                !epic.getTasks().isEmpty() ?
+                    epic.getTasks().stream()
+                            .map(TaskMapper::toFullTaskDto)
+                            .collect(Collectors.toList()) : new ArrayList<>(),
                 epic.getTitle(),
                 epic.getDescription(),
                 epic.getStatus().toString(),
                 epic.getDuration(),
-                epic.getStartTime().toString(),
-                epic.getEndTime().toString()
+                epic.getStartTime() != null ? epic.getStartTime().toString() : null,
+                epic.getEndTime() != null ? epic.getEndTime().toString() : null
         );
     }
 
@@ -53,14 +54,17 @@ public class EpicMapper {
                         .collect(Collectors.toList()),
                 epic.getTitle(),
                 epic.getStatus().toString(),
-                epic.getStartTime().toString(),
-                epic.getEndTime().toString()
+                epic.getStartTime() != null ? epic.getStartTime().toString() : null,
+                epic.getEndTime() != null ? epic.getEndTime().toString() : null
         );
     }
 
     public static EpicParametersDto calculateEpicParameters(List<Task> tasks) {
         int duration = 0;
         TaskStatus calculatedStatus = null;
+        if (tasks.isEmpty()) {
+            return new EpicParametersDto(0, TaskStatus.DONE, null, null);
+        }
         LocalDate epicStart = tasks.get(0).getStartDate();
         LocalDate epicEnd = tasks.get(0).getEndDate();
         Set<TaskStatus> taskStats = new HashSet<>();

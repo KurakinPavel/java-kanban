@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -28,5 +29,19 @@ public class TaskClient {
                 .bodyValue(updateTaskDto)
                 .retrieve()
                 .toEntity(Object.class);
+    }
+
+    public Mono<ResponseEntity<Object>> getTaskById(Integer taskId) {
+        return webClient.get()
+                .uri("/tasks/{taskId}", taskId)
+                .retrieve()
+                .toEntity(Object.class);
+    }
+
+    public Flux<Object> getTasksWithoutEpics() {
+        return webClient.get()
+                .uri("/tasks/without-epics")
+                .retrieve()
+                .bodyToFlux(Object.class);
     }
 }
