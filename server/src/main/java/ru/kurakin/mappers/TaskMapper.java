@@ -1,9 +1,11 @@
 package ru.kurakin.mappers;
 
 import ru.kurakin.dto.Constants;
+import ru.kurakin.dto.epic.SuperShortEpicDto;
 import ru.kurakin.dto.task.FullTaskDto;
 import ru.kurakin.dto.task.NewTaskDto;
 import ru.kurakin.dto.task.ShortTaskDto;
+import ru.kurakin.dto.task.SuperShortTaskDto;
 import ru.kurakin.enums.TaskStatus;
 import ru.kurakin.model.Epic;
 import ru.kurakin.model.Task;
@@ -53,6 +55,13 @@ public class TaskMapper {
                 task.getStatus().toString(),
                 task.getStartDate().toString(),
                 task.getEndDate().toString()
+        );
+    }
+
+    public static SuperShortTaskDto toSuperShortTaskDto(Task task) {
+        return new SuperShortTaskDto(
+                task.getId(),
+                task.getTitle()
         );
     }
 }

@@ -4,6 +4,7 @@ import ru.kurakin.dto.epic.EpicParametersDto;
 import ru.kurakin.dto.epic.FullEpicDto;
 import ru.kurakin.dto.epic.NewEpicDto;
 import ru.kurakin.dto.epic.ShortEpicDto;
+import ru.kurakin.dto.epic.SuperShortEpicDto;
 import ru.kurakin.enums.TaskStatus;
 import ru.kurakin.model.Epic;
 import ru.kurakin.model.Task;
@@ -56,6 +57,13 @@ public class EpicMapper {
                 epic.getStatus().toString(),
                 epic.getStartTime() != null ? epic.getStartTime().toString() : null,
                 epic.getEndTime() != null ? epic.getEndTime().toString() : null
+        );
+    }
+
+    public static SuperShortEpicDto toSuperShortEpicDto(Epic epic) {
+        return new SuperShortEpicDto(
+                epic.getId(),
+                epic.getTitle()
         );
     }
 
