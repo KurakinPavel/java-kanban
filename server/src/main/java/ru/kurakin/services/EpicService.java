@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kurakin.dto.epic.EpicParametersDto;
 import ru.kurakin.dto.epic.FullEpicDto;
 import ru.kurakin.dto.epic.NewEpicDto;
+import ru.kurakin.dto.epic.ShortEpicDto;
 import ru.kurakin.dto.epic.UpdateEpicDto;
 import ru.kurakin.enums.TaskStatus;
 import ru.kurakin.mappers.EpicMapper;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,26 +36,31 @@ public class EpicService {
     public FullEpicDto saveEpic(NewEpicDto newEpicDto) {
         User coordinator = userRepository.getReferenceById(newEpicDto.getCoordinatorId());
         coordinator.getId();
-        List<Task> epicTasks = taskRepository.findAllById(newEpicDto.getTaskIds());
-        if (epicTasks.size() != newEpicDto.getTaskIds().size()) {
-            throw new IllegalArgumentException("При создании эпика указаны не существующие задачи");
-        }
-        for (Task task : epicTasks) {
-            if (task.getEpic() != null) {
-                throw new IllegalArgumentException("При создании эпика указана задача, относящаяся к существующему эпику");
+        Epic epic;
+        if (!newEpicDto.getTaskIds().isEmpty()) {
+            List<Task> epicTasks = taskRepository.findAllById(newEpicDto.getTaskIds());
+            if (epicTasks.size() != newEpicDto.getTaskIds().size()) {
+                throw new IllegalArgumentException("При создании эпика указаны не существующие задачи");
             }
+            for (Task task : epicTasks) {
+                if (task.getEpic() != null) {
+                    throw new IllegalArgumentException("При создании эпика указана задача, относящаяся к существующему эпику");
+                }
+            }
+            Set<Task> tasks = new HashSet<>(epicTasks);
+            EpicParametersDto calculatedParameters = EpicMapper.calculateEpicParameters(epicTasks);
+            TaskStatus status = calculatedParameters.getCalculatedStatus();
+            int duration = calculatedParameters.getDuration();
+            LocalDate epicStart = calculatedParameters.getEpicStart();
+            LocalDate epicEnd = calculatedParameters.getEpicEnd();
+            epic = epicRepository.save(EpicMapper.toEpic(newEpicDto, coordinator, tasks, status, duration, epicStart, epicEnd));
+            for (Task task : epicTasks) {
+                task.setEpic(epic);
+            }
+            taskRepository.saveAll(epicTasks);
+        } else {
+            epic = epicRepository.save(EpicMapper.toEpic(newEpicDto, coordinator, new HashSet<>(), TaskStatus.NEW, 0, null, null));
         }
-        Set<Task> tasks = new HashSet<>(epicTasks);
-        EpicParametersDto calculatedParameters = EpicMapper.calculateEpicParameters(epicTasks);
-        TaskStatus status = calculatedParameters.getCalculatedStatus();
-        int duration = calculatedParameters.getDuration();
-        LocalDate epicStart = calculatedParameters.getEpicStart();
-        LocalDate epicEnd = calculatedParameters.getEpicEnd();
-        Epic epic = epicRepository.save(EpicMapper.toEpic(newEpicDto, coordinator, tasks, status, duration, epicStart, epicEnd));
-        for (Task task : epicTasks) {
-            task.setEpic(epic);
-        }
-        taskRepository.saveAll(epicTasks);
         return EpicMapper.toFullEpicDto(epic);
     }
 
@@ -82,6 +89,31 @@ public class EpicService {
     }
 
     @Transactional
+    public FullEpicDto addTaskToEpic(int epicId, int taskId) {
+        Epic epic = epicRepository.getReferenceById(epicId);
+        Task task = taskRepository.getReferenceById(taskId);
+        if (task.getEpic() != null) {
+            throw new IllegalArgumentException("Подзадача с id " + taskId + " уже связана с эпиком с id " + task.getEpic().getId());
+        }
+        Set<Task> epicTasks = epic.getTasks();
+        boolean resultOfAdding = epicTasks.add(task);
+        if (resultOfAdding) {
+            task.setEpic(epic);
+            EpicParametersDto calculatedParameters = EpicMapper.calculateEpicParameters(epicTasks.stream().toList());
+            epic.setDuration(calculatedParameters.getDuration());
+            epic.setStatus(calculatedParameters.getCalculatedStatus());
+            epic.setStartTime(calculatedParameters.getEpicStart());
+            epic.setEndTime(calculatedParameters.getEpicEnd());
+            epicRepository.save(epic);
+            taskRepository.save(task);
+            log.info("Подзадача с id {} добавлена в эпик с id {}", taskId, epicId);
+        } else {
+            throw new IllegalArgumentException("Добавить подзадачу с id " + taskId + " в эпик с id " + epicId + " не удалось");
+        }
+        return EpicMapper.toFullEpicDto(epic);
+    }
+
+    @Transactional
     public FullEpicDto removeTaskFromEpic(int epicId, int taskId) {
         Epic epic = epicRepository.getReferenceById(epicId);
         Task task = taskRepository.getReferenceById(taskId);
@@ -106,28 +138,29 @@ public class EpicService {
         return EpicMapper.toFullEpicDto(epic);
     }
 
-    @Transactional
-    public FullEpicDto addTaskToEpic(int epicId, int taskId) {
-        Epic epic = epicRepository.getReferenceById(epicId);
-        Task task = taskRepository.getReferenceById(taskId);
-        if (task.getEpic() != null) {
-            throw new IllegalArgumentException("Подзадача с id " + taskId + " уже связана с эпиком с id " + task.getEpic().getId());
-        }
-        Set<Task> epicTasks = epic.getTasks();
-        boolean resultOfAdding = epicTasks.add(task);
-        if (resultOfAdding) {
-            task.setEpic(epic);
-            EpicParametersDto calculatedParameters = EpicMapper.calculateEpicParameters(epicTasks.stream().toList());
-            epic.setDuration(calculatedParameters.getDuration());
-            epic.setStatus(calculatedParameters.getCalculatedStatus());
-            epic.setStartTime(calculatedParameters.getEpicStart());
-            epic.setEndTime(calculatedParameters.getEpicEnd());
-            epicRepository.save(epic);
-            taskRepository.save(task);
-            log.info("Подзадача с id {} добавлена в эпик с id {}", taskId, epicId);
-        } else {
-            throw new IllegalArgumentException("Добавить подзадачу с id " + taskId + " в эпик с id " + epicId + " не удалось");
-        }
-        return EpicMapper.toFullEpicDto(epic);
+    @Transactional(readOnly = true)
+    public FullEpicDto getEpicById(int epicId) {
+        return EpicMapper.toFullEpicDto(epicRepository.getReferenceById(epicId));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ShortEpicDto> getAllEpics() {
+        return epicRepository.findAll().stream()
+                .map(EpicMapper::toShortEpicDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ShortEpicDto> getEpicsWithTasks() {
+        return epicRepository.findAllWhereTasksIsNotEmpty().stream()
+                .map(EpicMapper::toShortEpicDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ShortEpicDto> getEpicsWithoutTasks() {
+        return epicRepository.findAllWhereTasksIsEmpty().stream()
+                .map(EpicMapper::toShortEpicDto)
+                .collect(Collectors.toList());
     }
 }

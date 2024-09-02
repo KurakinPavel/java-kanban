@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -44,5 +45,33 @@ public class EpicClient {
                 .contentType(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .toEntity(Object.class);
+    }
+
+    public Mono<ResponseEntity<Object>> getEpicById(Integer epicId) {
+        return webClient.get()
+                .uri("/epics/{epicId}", epicId)
+                .retrieve()
+                .toEntity(Object.class);
+    }
+
+    public Flux<Object> getAllEpics() {
+        return webClient.get()
+                .uri("/epics/all")
+                .retrieve()
+                .bodyToFlux(Object.class);
+    }
+
+    public Flux<Object> getEpicsWithTasks() {
+        return webClient.get()
+                .uri("/epics/with-tasks")
+                .retrieve()
+                .bodyToFlux(Object.class);
+    }
+
+    public Flux<Object> getEpicsWithoutTasks() {
+        return webClient.get()
+                .uri("/epics/without-tasks")
+                .retrieve()
+                .bodyToFlux(Object.class);
     }
 }
