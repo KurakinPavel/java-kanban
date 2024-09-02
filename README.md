@@ -1,7 +1,7 @@
 # Реализация проекта Organizer (kanban)
 ##### Бэкенд сервиса для планирования командной работы.
 ##### Планируется:
-1. Использовать технологии: Spring Boot, REST, Lombok, Hibernate, PostgreSQL, Микросервисы, Docker.
+1. Использовать технологии: Spring Boot, WebClient, REST, Lombok, Hibernate, PostgreSQL, Микросервисы, Docker.
 2. Внедрить в коде паттерны проектирования Observer (через класс PropertyChangeSupport и интерфейс PropertyChangeListener) и Proxy.
 3. Обеспечить развёртывание проекта в Docker, через команду "docker-compose up".
 ### Развёртывание проекта на текущей стадии разработки
