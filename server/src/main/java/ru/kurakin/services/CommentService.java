@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kurakin.dto.comment.CommentDtoOut;
+import ru.kurakin.dto.comment.TaskCommentDtoOut;
 import ru.kurakin.dto.comment.NewCommentDto;
 import ru.kurakin.mappers.CommentMapper;
 import ru.kurakin.model.Epic;
@@ -25,7 +25,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public CommentDtoOut addComment(int authorId, int epicId, int taskId, NewCommentDto newCommentDto) {
+    public TaskCommentDtoOut addComment(int authorId, int epicId, int taskId, NewCommentDto newCommentDto) {
         if (epicId == 0 && taskId == 0) {
             throw new IllegalArgumentException("Не заданы эпик и/или задача, к которым пишется комментарий");
         }

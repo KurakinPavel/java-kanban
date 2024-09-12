@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class TaskComment {
     @Id
     @Column(name = "COMMENT_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDtoOut {
+public class TaskCommentDtoOut {
     protected int id;
     protected String comment;
     protected SuperShortEpicDto epic;
