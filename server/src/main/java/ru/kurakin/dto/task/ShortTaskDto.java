@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.kurakin.dto.user.ShortUserDto;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor

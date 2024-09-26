@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -16,28 +18,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
-@Table(name = "TASK_COMMENTS", schema = "PUBLIC")
+@Table(name = "MESSAGES", schema = "PUBLIC")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskComment {
+public class Message {
     @Id
-    @Column(name = "TASK_COMMENT_ID", nullable = false)
+    @Column(name = "MESSAGE_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    @Column(name = "COMMENT", nullable = false)
-    protected String comment;
+    @Column(nullable = false)
+    protected String message;
+    @ManyToMany
+    @JoinTable(name = "MESSAGE_RECIPIENTS",
+            joinColumns = @JoinColumn(name = "MESSAGE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "RECIPIENT_ID"))
+    protected Set<User> recipients;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "TASK_ID")
-    protected Task task;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "AUTHOR_ID")
-    protected User author;
-    @Column(name = "CREATED", nullable = false)
+    @JoinColumn(name = "SENDER_ID")
+    protected User sender;
+    @Column(nullable = false)
     protected LocalDate created;
 }

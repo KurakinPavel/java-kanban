@@ -1,7 +1,6 @@
 package ru.kurakin.mappers;
 
 import ru.kurakin.dto.Constants;
-import ru.kurakin.dto.epic.SuperShortEpicDto;
 import ru.kurakin.dto.task.FullTaskDto;
 import ru.kurakin.dto.task.NewTaskDto;
 import ru.kurakin.dto.task.ShortTaskDto;

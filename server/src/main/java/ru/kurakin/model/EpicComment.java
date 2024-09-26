@@ -18,26 +18,26 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "TASK_COMMENTS", schema = "PUBLIC")
+@Table(name = "EPIC_COMMENTS", schema = "PUBLIC")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskComment {
+public class EpicComment {
     @Id
-    @Column(name = "TASK_COMMENT_ID", nullable = false)
+    @Column(name = "EPIC_COMMENT_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
     @Column(name = "COMMENT", nullable = false)
     protected String comment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "TASK_ID")
-    protected Task task;
+    @JoinColumn(name = "EPIC_ID")
+    protected Epic epic;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "AUTHOR_ID")
     protected User author;
-    @Column(name = "CREATED", nullable = false)
+    @Column(nullable = false)
     protected LocalDate created;
 }

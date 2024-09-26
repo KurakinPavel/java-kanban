@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.kurakin.dto.task.SuperShortTaskDto;
+import ru.kurakin.dto.epic.SuperShortEpicDto;
 import ru.kurakin.dto.user.ShortUserDto;
 
 import java.time.LocalDate;
@@ -13,10 +13,10 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskCommentDtoOut {
+public class EpicCommentDtoOut {
     protected int id;
     protected String comment;
-    protected SuperShortTaskDto task;
+    protected SuperShortEpicDto epic;
     protected ShortUserDto author;
     protected LocalDate created;
 }
