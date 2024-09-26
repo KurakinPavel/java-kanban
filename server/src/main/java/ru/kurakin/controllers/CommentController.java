@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kurakin.dto.comment.CommentDtoOut;
+import ru.kurakin.dto.comment.EpicCommentDtoOut;
+import ru.kurakin.dto.comment.TaskCommentDtoOut;
 import ru.kurakin.dto.comment.NewCommentDto;
 import ru.kurakin.services.CommentService;
 
@@ -19,11 +20,17 @@ import ru.kurakin.services.CommentService;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping
-    public CommentDtoOut addComment(@RequestHeader("X-Sharer-User-Id") Integer authorId,
-                                    @RequestParam(defaultValue = "0") Integer epicId,
-                                    @RequestParam(defaultValue = "0") Integer taskId,
-                                    @RequestBody NewCommentDto newCommentDto) {
-        return commentService.addComment(authorId, epicId, taskId, newCommentDto);
+    @PostMapping("/tasks")
+    public TaskCommentDtoOut addTaskComment(@RequestHeader("X-Sharer-User-Id") Integer authorId,
+                                        @RequestParam(defaultValue = "0") Integer taskId,
+                                        @RequestBody NewCommentDto newCommentDto) {
+        return commentService.addTaskComment(authorId, taskId, newCommentDto);
+    }
+
+    @PostMapping("/epics")
+    public EpicCommentDtoOut addEpicComment(@RequestHeader("X-Sharer-User-Id") Integer authorId,
+                                            @RequestParam(defaultValue = "0") Integer epicId,
+                                            @RequestBody NewCommentDto newCommentDto) {
+        return commentService.addEpicComment(authorId, epicId, newCommentDto);
     }
 }
